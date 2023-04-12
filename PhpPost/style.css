@@ -1,0 +1,65 @@
+body {
+    background: rgb(158, 158, 158);
+    margin: 0;
+    padding: 0;
+}
+
+
+
+.container__box {
+    display: none;
+    background: #ababab;
+    height: 200px;
+    width: 450px;
+    margin-top: 2%;
+    margin-left: 2%;
+}
+
+.tariff_name {
+
+    display: flex;
+    justify-content: center;
+    margin: 20px auto;
+    height: 50px;
+
+}
+
+
+.container__name__delivery {
+    display: flex;
+    justify-content: center;
+}
+
+.container__time__delivery {
+    display: flex;
+    justify-content: center;
+}
+
+.delivery_sum {
+    margin-top: 5%;
+    display: flex;
+    justify-content: center;
+    color: white;
+}
+
+.calendar__min  {
+    color: #9fcdff;
+}
+
+.calendar__max {
+    color: #9fcdff;
+}
+
+span.dash {
+    color: #9fcdff;
+}
+
+h3,h4 {
+    color:aliceblue;
+}
+
+.test {
+    font-size: 30px;
+    display: flex;
+    margin-top: 300px;
+}
