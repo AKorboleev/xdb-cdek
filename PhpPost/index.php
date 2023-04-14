@@ -12,7 +12,10 @@
 </head>
 <body>
 
-    <div class="container__box">
+
+    <button type="button" name="postSdek" onclick="postSdek(); return false;" class="btn_sdek">отправить</button>
+
+    <div class="container__box" onclick="this.className = (this.className == 'container__box' ? 'container__box__click' : 'container__box')">
             <div class="container__name__delivery">
                 <h3 class="tariff_name"></h3>
             </div>

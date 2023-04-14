@@ -1,11 +1,13 @@
 <?php
 
+
+
 require '../vendor/autoload.php';
 
 
 use GuzzleHttp\Client;
 
-//
+
 
 // Запрос токена
 //-------------------------------------------------------------------
@@ -18,47 +20,49 @@ use GuzzleHttp\Client;
     ]);
     $data = json_decode($response->getBody()->getContents()); // запрос форматируется в json формат
 
-    //tt($data);
-    //Сам токен
+    // Сам токен
     $token = $data->access_token;
-//    tt($token);
 //-------------------------------------------------------------------
-
 
 
 
 // Отправляем запрос на выдачю какого либо товара
 //-------------------------------------------------------------------
-function PostRequest($token, $post, $curUrl)
+function curlPostRequest($token, $post, $curUrl)
 {
     // Не трогать , если $post не будет работать, то поставить эту переменную вместо ее
     //$PostJson = "{\n    \"type\": 1,\n    \"date\": \"2020-11-03T11:49:32+0700\",\n    \"currency\": 1,\n    \"lang\": \"rus\",\n    \"from_location\": {\n        \"code\": 270\n    },\n    \"to_location\": {\n        \"code\": 44\n    },\n    \"packages\": [\n        {\n            \"height\": 10,\n            \"length\": 10,\n            \"weight\": 4000,\n            \"width\": 10\n        }\n    ]\n}";
     //-------------------------------------------------------------------
 
-    $ch = curl_init();
-
-    curl_setopt($ch, CURLOPT_URL, $curUrl);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+    $ch = curl_init(); //Инициализирует сеанс cURL
+    // curl_setopt устанавливает параметры curl
+    curl_setopt($ch, CURLOPT_URL, $curUrl);// что будем загружать
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // для возврата результата передачи в качестве строки, место прямого вывода в браузер.
+    curl_setopt($ch, CURLOPT_POST, 1); // post запрос
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $post); // Передача разных типов данных
     $headers[] = 'Authorization: Bearer ' . $token;
     $headers[] = 'Content-Type: application/json';
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); // выполение запроса
 
+    // Проверка на ошибки
     if (curl_errno($ch)) {
         echo 'Error:' . curl_error($ch);
     }else {
         curl_close($ch);
     }
-    // response  - в нем находится большой массив tariff_codes, внутри которого еще куча объектов
-    $response = curl_exec($ch);
+    // response
+    //  - в нем находится большой массив tariff_codes, внутри которого еще куча объектов
+    $response = curl_exec($ch); // ответ
     print_r($response);
 
-
 }
+//-------------------------------------------------------------------
 
 
-PostRequest($token,
+
+// пердеаем токен, json, ссылку
+//-------------------------------------------------------------------
+curlPostRequest($token,
     '{
     "type": 1,
     "date": "2020-11-03T11:49:32+0700",
@@ -82,6 +86,9 @@ PostRequest($token,
     'https://api.edu.cdek.ru/v2/calculator/tarifflist?='
 );
 
+//-------------------------------------------------------------------
+
+
 
 // Вывод данных
 //-------------------------------------------------------------------
@@ -91,3 +98,25 @@ function tt($data)
     echo print_r($data);
     echo '</pre>';
 }
+//-------------------------------------------------------------------
+
+
+
+// получаем данные и отправляем в sdek2.0
+//-------------------------------------------------------------------
+function postSdek()
+{
+    $client = new Client();
+    $response = $client->request('POST', 'http://xdb-cdek/PhpPost/index.php', [
+        'form_params' => [
+            'field_name' => '',
+            'other_field' => '',
+            ''
+        ]
+    ]);
+}
+//-------------------------------------------------------------------
+
+//postsdek();
+
+//var_dump($_GET);
