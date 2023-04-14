@@ -12,8 +12,7 @@
 </head>
 <body>
 
-
-    <button type="button" name="postSdek" onclick="postSdek(); return false;" class="btn_sdek">отправить</button>
+    <button type="submit" name="postSdek" onclick="postSdek()" class="btn_sdek" formmethod="POST">отправить</button>
 
     <div class="container__box" onclick="this.className = (this.className == 'container__box' ? 'container__box__click' : 'container__box')">
             <div class="container__name__delivery">

@@ -87,36 +87,40 @@ async function postSdek() {
     let deliverySum = document.querySelector(".delivery_sum")
     //массив с данными
     let delivery = {
-        deliveryName: tariffName.textContent,
-        calendarMin: calendarMin.textContent,
-        calendarMax: calendarMax.textContent,
-        deliverySum: deliverySum.textContent,
+        'tariffName': tariffName.textContent,
+        'calendarMin': calendarMin.textContent,
+        'calendarMax': calendarMax.textContent,
+        'deliverySum': deliverySum.textContent,
     }
-    console.log(typeof delivery)
-    let obj = JSON.stringify(delivery)
-    location.href='http://xdb-cdek/PhpPost/handler.php/?arr=' + obj;
+
+    // let delivery = [
+    //      tariffName.textContent,
+    //      calendarMin.textContent,
+    //      calendarMax.textContent,
+    //      deliverySum.textContent,
+    // ]
 
 
-    // try {
-    //     let response = await fetch('http://xdb-cdek/PhpPost/handler.php', {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/application/json',
-    //         },
-    //
-    //         mode: 'no-cors',
-    //         cache: 'no-cache',
-    //         body: JSON.stringify(delivery)
-    //     })
-    //
-    //     if (!response.ok) {
-    //         // Ошибка с получаемыми данными
-    //         console.log("Ошибка HTTP: " + response.status);
-    //     } else { // если HTTP-статус в диапазоне 200-299
-    //            console.log('запрос ушел')
-    //     }
-    // } catch (error) {
-    //     return error;
-    // }
+
+    try {
+        let response = await fetch('http://xdb-cdek/PhpPost/post.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            mode: 'no-cors',
+            cache: 'no-cache',
+                body: JSON.stringify(delivery)
+        })
+
+        if (!response.ok) {
+            // Ошибка с получаемыми данными
+            console.log("Ошибка HTTP: " + response.status);
+        } else { // если HTTP-статус в диапазоне 200-299
+               console.log('запрос ушел')
+        }
+    } catch (error) {
+        return error;
+    }
 }
 //-------------------------------------------------------------------

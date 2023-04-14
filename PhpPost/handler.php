@@ -48,12 +48,10 @@ function curlPostRequest($token, $post, $curUrl)
     if (curl_errno($ch)) {
         echo 'Error:' . curl_error($ch);
     }else {
-        curl_close($ch);
+        $response = curl_exec($ch); // ответ
+        print_r($response);
     }
-    // response
-    //  - в нем находится большой массив tariff_codes, внутри которого еще куча объектов
-    $response = curl_exec($ch); // ответ
-    print_r($response);
+
 
 }
 //-------------------------------------------------------------------
@@ -100,23 +98,3 @@ function tt($data)
 }
 //-------------------------------------------------------------------
 
-
-
-// получаем данные и отправляем в sdek2.0
-//-------------------------------------------------------------------
-function postSdek()
-{
-    $client = new Client();
-    $response = $client->request('POST', 'http://xdb-cdek/PhpPost/index.php', [
-        'form_params' => [
-            'field_name' => '',
-            'other_field' => '',
-            ''
-        ]
-    ]);
-}
-//-------------------------------------------------------------------
-
-//postsdek();
-
-//var_dump($_GET);
