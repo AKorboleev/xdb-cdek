@@ -1,9 +1,6 @@
 <?php
 
-
-
 require '../vendor/autoload.php';
-
 
 use GuzzleHttp\Client;
 
@@ -11,7 +8,6 @@ use GuzzleHttp\Client;
 
 // Запрос токена
 //-------------------------------------------------------------------
-
     $client = new Client();
     $url = 'https://api.edu.cdek.ru/v2/oauth/token?grant_type=client_credentials&client_id=EMscd6r9JnFiQ3bLoyjJY6eM78JrJceI&client_secret=PjLZkKBHEiLK3YsjtNrt3TGNG0ahs3kG';
 
@@ -30,9 +26,6 @@ use GuzzleHttp\Client;
 //-------------------------------------------------------------------
 function curlPostRequest($token, $post, $curUrl)
 {
-    // Не трогать , если $post не будет работать, то поставить эту переменную вместо ее
-    //$PostJson = "{\n    \"type\": 1,\n    \"date\": \"2020-11-03T11:49:32+0700\",\n    \"currency\": 1,\n    \"lang\": \"rus\",\n    \"from_location\": {\n        \"code\": 270\n    },\n    \"to_location\": {\n        \"code\": 44\n    },\n    \"packages\": [\n        {\n            \"height\": 10,\n            \"length\": 10,\n            \"weight\": 4000,\n            \"width\": 10\n        }\n    ]\n}";
-    //-------------------------------------------------------------------
 
     $ch = curl_init(); //Инициализирует сеанс cURL
     // curl_setopt устанавливает параметры curl
@@ -51,7 +44,6 @@ function curlPostRequest($token, $post, $curUrl)
         $response = curl_exec($ch); // ответ
         print_r($response);
     }
-
 
 }
 //-------------------------------------------------------------------

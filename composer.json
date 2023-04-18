@@ -3,6 +3,13 @@
     "App\\": "app/"
   },
   "require": {
-    "guzzlehttp/guzzle": "^7.0"
+    "guzzlehttp/guzzle": "^7.5",
+    "symfony/http-client": "^6.0",
+    "nyholm/psr7": "^1.6",
+    "cdek-it/sdk2.0": "^0.1.5"
+  },
+  "platform": {
+    "php": "7.4.0"
   }
+
 }

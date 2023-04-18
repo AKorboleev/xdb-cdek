@@ -68,11 +68,15 @@ postJson();
 
 
 
-// Отправляем в handler с данными
+// Отправляем в handler с данными доставки
 //-------------------------------------------------------------------
 async function postSdek() {
 
     let containerBox = document.querySelector(".container__box__click")
+
+
+    // containerBox.from().forEach(containerBox => console.log(containerBox))
+
 
     // Название тарифа
     let tariffName = document.querySelector("h3.tariff_name")
@@ -85,6 +89,20 @@ async function postSdek() {
 
     // Сумма доставки
     let deliverySum = document.querySelector(".delivery_sum")
+
+
+    // // Название тарифа
+    // let tariffName = document.querySelector("h3.tariff_name__click")
+    //
+    // // Минимальная доставка
+    // let calendarMin = document.querySelector(".calendar__min__click")
+    //
+    // // Максимальная доставка
+    // let calendarMax = document.querySelector(".calendar__max__click")
+    //
+    // // Сумма доставки
+    // let deliverySum = document.querySelector(".delivery_sum__click")
+
     //массив с данными
     let delivery = {
         'tariffName': tariffName.textContent,
@@ -92,18 +110,10 @@ async function postSdek() {
         'calendarMax': calendarMax.textContent,
         'deliverySum': deliverySum.textContent,
     }
-
-    // let delivery = [
-    //      tariffName.textContent,
-    //      calendarMin.textContent,
-    //      calendarMax.textContent,
-    //      deliverySum.textContent,
-    // ]
-
-
-
+// Отправка данных выбранной доставки
+//-------------------------------------------------------------------
     try {
-        let response = await fetch('http://xdb-cdek/PhpPost/post.php', {
+        let response = await fetch('http://xdb-cdek/PhpPost/sdek2.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
