@@ -9,13 +9,12 @@ async function postJson() {
                 },
                 mode: 'no-cors',
                 cache: 'no-cache',
-            })
-            //Проверка прошел ли запрос в handler.php
+            });
+            // Проверка прошел ли запрос в handler.php
             if (!response.ok) {
                 // Ошибка с получаемыми данными
                 console.log('Ошибка HTTP: ' + response.status);
             } else { // если HTTP-статус в диапазоне 200-299
-
                 // Читаем ответ в формате JSON
                 let content = await response.json();
 
@@ -97,7 +96,7 @@ async function postSdek() {
             mode: 'no-cors',
             cache: 'no-cache',
             body: JSON.stringify(delivery)
-        })
+        });
         // Проверка ушел ли запрос в sdek2.php
         if (!response.ok) {
             // Ошибка с получаемыми данными

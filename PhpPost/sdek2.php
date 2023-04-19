@@ -9,11 +9,11 @@ use CdekSDK2\Exceptions\AuthException;
 use Symfony\Component\HttpClient\Psr18Client;
 
 
-$client = new Psr18Client();
-$cdek = new Client($client);
-// Указываем имя и пароль
-$cdek->setAccount('EMscd6r9JnFiQ3bLoyjJY6eM78JrJceI');
-$cdek->setSecure('PjLZkKBHEiLK3YsjtNrt3TGNG0ahs3kG');
+    $client = new Psr18Client();
+    $cdek = new Client($client);
+    // Указываем имя и пароль
+    $cdek->setAccount('EMscd6r9JnFiQ3bLoyjJY6eM78JrJceI');
+    $cdek->setSecure('PjLZkKBHEiLK3YsjtNrt3TGNG0ahs3kG');
 
 
 
