@@ -55,8 +55,6 @@ async function postJson() {
                     deliverySum.textContent = content.tariff_codes[k].delivery_sum
                     //-------------------------------------------------------------------
                 }
-
-
             }
         } catch (error) {
             return  error;
@@ -72,12 +70,6 @@ postJson();
 //-------------------------------------------------------------------
 async function postSdek() {
 
-    let containerBox = document.querySelector(".container__box__click")
-
-
-    // containerBox.from().forEach(containerBox => console.log(containerBox))
-
-
     // Название тарифа
     let tariffName = document.querySelector("h3.tariff_name")
 
@@ -90,20 +82,7 @@ async function postSdek() {
     // Сумма доставки
     let deliverySum = document.querySelector(".delivery_sum")
 
-
-    // // Название тарифа
-    // let tariffName = document.querySelector("h3.tariff_name__click")
-    //
-    // // Минимальная доставка
-    // let calendarMin = document.querySelector(".calendar__min__click")
-    //
-    // // Максимальная доставка
-    // let calendarMax = document.querySelector(".calendar__max__click")
-    //
-    // // Сумма доставки
-    // let deliverySum = document.querySelector(".delivery_sum__click")
-
-    //массив с данными
+    // Массив с данными
     let delivery = {
         'tariffName': tariffName.textContent,
         'calendarMin': calendarMin.textContent,
@@ -112,7 +91,6 @@ async function postSdek() {
     }
 
 // Отправка данных выбранной доставки
-//     "vendor/cdek-it/sdk2.0/sdek2.php"
     try {
         let response = await fetch('http://xdb-cdek/PhpPost/sdek2.php', {
             method: 'POST',

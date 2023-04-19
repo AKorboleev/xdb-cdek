@@ -11,14 +11,15 @@ use Symfony\Component\HttpClient\Psr18Client;
 
 $client = new Psr18Client();
 $cdek = new Client($client);
-$cdek->setAccount('account');
-$cdek->setSecure('secure');
+// Указываем имя и пароль
+$cdek->setAccount('EMscd6r9JnFiQ3bLoyjJY6eM78JrJceI');
+$cdek->setSecure('PjLZkKBHEiLK3YsjtNrt3TGNG0ahs3kG');
 
-$cdek->setTest(true);
+
 
     // Принимаем данные в формате json и выводим в объект
     $json = json_decode(file_get_contents('php://input'));
-    // Извлекаем то что нужно нам
+
     // Имя тарифа
     $tariffName = $json->tariffName;
     // Сумма доставки
@@ -28,26 +29,23 @@ $cdek->setTest(true);
     // Максимальное время доставки
     $calendarMax = $json->calendarMax;
 
-    print_r($tariffName);
-    print_r($deliverySum);
-    print_r($calendarMin);
-    print_r($calendarMax);
-
-
-
 // Вход в аккаунт
 //-------------------------------------------------------------------
 try {
     $cdek->authorize();
     $cdek->getToken();
     $cdek->getExpire();
-    print_r('good auth');
+    print_r('123123123');
 } catch (AuthException $exception) {
     //Авторизация не выполнена, не верные account и secure
     echo $exception->getMessage();
     print_r('error auth');
 }
 
+
+
+// Создание заказа
+//-------------------------------------------------------------------
 $order = BaseTypes\Order::create([
     'number' => '3627',
     'tariff_code' => '1',
@@ -55,7 +53,10 @@ $order = BaseTypes\Order::create([
         'name' => 'Vasya',
     ]),
     'recipient' => BaseTypes\Contact::create([
-        'name' => 'Alexander'
+        'name' => 'Alexander',
+        'phones' => [
+            BaseTypes\Phone::create(['number' => '88001234567'])
+        ]
     ]),
     'from_location' => BaseTypes\Location::create([
         'code' => 137,
@@ -90,42 +91,22 @@ $order = BaseTypes\Order::create([
 
 
 
-//tt($order);
-
-
-
 // Отправка данных
 //-------------------------------------------------------------------
 try {
     $result = $cdek->orders()->add($order);
-    tt($result);
     if ($result->isOk()) {
-        print_r('hello');
         //Запрос успешно выполнился
         $response_order = $cdek->formatResponse($result, BaseTypes\Order::class);
-        tt($response_order);
         // получаем UUID заказа и сохраняем его
         $response_order->entity->uuid;
-        tt($response_order);
-        echo 'Запрос успешно выполнился';
     }
     if ($result->hasErrors()) {
         // Обрабатываем ошибки
-        echo 'Запрос не выполнился';
     }
 } catch (RequestException $exception) {
     echo $exception->getMessage();
-    print_r('не разобрался что выводит )');
 }
 //-------------------------------------------------------------------
 
 
-// Вывод данных
-//-------------------------------------------------------------------
-function tt($data)
-{
-    echo '<pre>';
-    echo print_r($data);
-    echo '</pre>';
-}
-//-------------------------------------------------------------------
