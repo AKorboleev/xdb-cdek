@@ -14,22 +14,24 @@ async function postJson() {
         if (!response.ok) {
             // Ошибка с получаемыми данными
             console.log('Ошибка HTTP: ' + response.status);
-            // если HTTP-статус в диапазоне 200-299
-        } else {
+        }
+        // если HTTP-статус в диапазоне 200-299
+        else {
             // Читаем ответ в формате JSON
             let content = await response.json();
-            // Контейнер где хронятся все
-            let containerBox = document.querySelector(".container__box");
-
+            // Контейнер где хранятся все
+            let containerBox = document.querySelector('.container__box');
+            // Место none меняем за block
             containerBox.style.display = 'block';
+
             // Название тарифа
-            let tariffName = document.querySelector("h3.tariff_name");
+            let tariffName = document.querySelector('h3.tariff_name');
             // Минимальная доставка
-            let calendarMin = document.querySelector(".calendar__min");
+            let calendarMin = document.querySelector('.calendar__min');
             // Максимальная доставка
-            let calendarMax = document.querySelector(".calendar__max");
+            let calendarMax = document.querySelector('.calendar__max');
             // Сумма доставки
-            let deliverySum = document.querySelector(".delivery_sum");
+            let deliverySum = document.querySelector('.delivery_sum');
 
             // Цикл для вывода контента
             for (let k in content.tariff_codes) {
@@ -63,13 +65,13 @@ postJson();
 async function postSdek() {
 
     // Название тарифа
-    let tariffName = document.querySelector("h3.tariff_name");
+    let tariffName = document.querySelector('h3.tariff_name');
     // Минимальная доставка
-    let calendarMin = document.querySelector(".calendar__min");
+    let calendarMin = document.querySelector('.calendar__min');
     // Максимальная доставка
-    let calendarMax = document.querySelector(".calendar__max");
+    let calendarMax = document.querySelector('.calendar__max');
     // Сумма доставки
-    let deliverySum = document.querySelector(".delivery_sum");
+    let deliverySum = document.querySelector('.delivery_sum');
 
     // Массив с данными
     let delivery = {
@@ -94,9 +96,10 @@ async function postSdek() {
         if (!response.ok) {
             // Ошибка с получаемыми данными
             console.log('Ошибка HTTP: ' + response.status);
-            // если HTTP-статус в диапазоне 200-299
-        } else {
-               console.log('запрос ушел');
+        }
+        // если HTTP-статус в диапазоне 200-299
+        else {
+            console.log('запрос ушел');
         }
     } catch (error) {
         return error;
