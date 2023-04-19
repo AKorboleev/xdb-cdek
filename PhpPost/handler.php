@@ -6,8 +6,9 @@ use GuzzleHttp\Client;
 
 
 
-// Запрос токена
+
 //-------------------------------------------------------------------
+// Запрос токена
     $client = new Client();
     $url = 'https://api.edu.cdek.ru/v2/oauth/token?grant_type=client_credentials&client_id=EMscd6r9JnFiQ3bLoyjJY6eM78JrJceI&client_secret=PjLZkKBHEiLK3YsjtNrt3TGNG0ahs3kG';
 
@@ -21,11 +22,8 @@ use GuzzleHttp\Client;
     // Сам токен
     $token = $data->access_token;
 //-------------------------------------------------------------------
-
-
-
-// Возможные города доставки
 //-------------------------------------------------------------------
+// Возможные города доставки
 function curlGetRequest($token, $curUrl)
 {
     $ch = curl_init(); //Инициализирует сеанс cURL
@@ -49,9 +47,8 @@ function curlGetRequest($token, $curUrl)
 
 //curlGetRequest($token, 'https://api.cdek.ru/v2/location/cities/?size=3&page=0');
 
-
-// Отображение возможной доставки
 //-------------------------------------------------------------------
+// Отображение возможной доставки
 function curlPostRequest($token, $post, $curUrl)
 {
     $ch = curl_init(); //Инициализирует сеанс cURL
@@ -73,8 +70,8 @@ function curlPostRequest($token, $post, $curUrl)
     }
 }
 //-------------------------------------------------------------------
-
-
+//-------------------------------------------------------------------
+// Доставка
 function getSdekTariffs(): string
 {
     $firstCity = '16584';
@@ -103,13 +100,10 @@ function getSdekTariffs(): string
 
     return $post;
 }
-
-
-// пердеаем токен, json, ссылку
 //-------------------------------------------------------------------
+// пердеаем токен, json, ссылку
 curlPostRequest($token,
     getSdektariffs(),
     'https://api.edu.cdek.ru/v2/calculator/tarifflist?=',
-
 );
 //-------------------------------------------------------------------
