@@ -67,6 +67,7 @@ postJson();
 // Отправляем в handler с данными доставки
 //-------------------------------------------------------------------
 async function postSdek() {
+
     // Название тарифа
     let tariffName = document.querySelector("h3.tariff_name")
 

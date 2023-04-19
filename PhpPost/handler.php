@@ -7,13 +7,14 @@ use GuzzleHttp\Client;
 
 
 // Запрос токена
-
 //-------------------------------------------------------------------
     $client = new Client();
     $url = 'https://api.edu.cdek.ru/v2/oauth/token?grant_type=client_credentials&client_id=EMscd6r9JnFiQ3bLoyjJY6eM78JrJceI&client_secret=PjLZkKBHEiLK3YsjtNrt3TGNG0ahs3kG';
 
     $response = $client->request('POST', $url, [
-        'header' => ['Content-type' => 'application/x-www-form-urlencoded',]
+        'header' => [
+            'Content-type' => 'application/x-www-form-urlencoded'
+            ]
     ]);
     $data = json_decode($response->getBody()->getContents()); // запрос форматируется в json формат
 
@@ -22,7 +23,8 @@ use GuzzleHttp\Client;
 //-------------------------------------------------------------------
 
 
-// Отправляем запрос на выдачю какого либо товара
+
+// Возможные города доставки
 //-------------------------------------------------------------------
 function curlGetRequest($token, $curUrl)
 {
@@ -30,7 +32,7 @@ function curlGetRequest($token, $curUrl)
     // curl_setopt устанавливает параметры curl
     curl_setopt($ch, CURLOPT_URL, $curUrl);// что будем загружать
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // для возврата результата передачи в качестве строки, место прямого вывода в браузер.
-    curl_setopt($ch, CURLOPT_POST, 0); // post запрос
+    curl_setopt($ch, CURLOPT_POST, 0); // get запрос
     $headers[] = 'Authorization: Bearer ' . $token;
     $headers[] = 'Content-Type: application/json';
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); // выполение запроса
@@ -45,11 +47,10 @@ function curlGetRequest($token, $curUrl)
 }
 //-------------------------------------------------------------------
 
+//curlGetRequest($token, 'https://api.cdek.ru/v2/location/cities/?size=3&page=0');
 
-curlGetRequest($token, 'https://api.cdek.ru/v2/location/cities/?size=3&page=0');
 
-
-// Отправляем запрос на выдачю какого либо товара
+// Отображение возможной доставки
 //-------------------------------------------------------------------
 function curlPostRequest($token, $post, $curUrl)
 {
@@ -76,8 +77,8 @@ function curlPostRequest($token, $post, $curUrl)
 
 function getSdekTariffs(): string
 {
-    $city = '36749';
-    $lastCity = '16584';
+    $firstCity = '16584';
+    $lastCity = '36749';
     $type = 1;
     $post = '{
         "type":' . $type . ',
@@ -85,7 +86,7 @@ function getSdekTariffs(): string
         "currency": 1,
         "lang": "rus",
         "from_location": {
-            "code": '. $city .'
+            "code": '. $firstCity .'
         },
         "to_location": {
             "code": '. $lastCity .'
