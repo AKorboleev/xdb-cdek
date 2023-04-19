@@ -7,6 +7,7 @@ use GuzzleHttp\Client;
 
 
 // Запрос токена
+
 //-------------------------------------------------------------------
     $client = new Client();
     $url = 'https://api.edu.cdek.ru/v2/oauth/token?grant_type=client_credentials&client_id=EMscd6r9JnFiQ3bLoyjJY6eM78JrJceI&client_secret=PjLZkKBHEiLK3YsjtNrt3TGNG0ahs3kG';
@@ -20,6 +21,32 @@ use GuzzleHttp\Client;
     $token = $data->access_token;
 //-------------------------------------------------------------------
 
+
+// Отправляем запрос на выдачю какого либо товара
+//-------------------------------------------------------------------
+function curlGetRequest($token, $curUrl)
+{
+    $ch = curl_init(); //Инициализирует сеанс cURL
+    // curl_setopt устанавливает параметры curl
+    curl_setopt($ch, CURLOPT_URL, $curUrl);// что будем загружать
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // для возврата результата передачи в качестве строки, место прямого вывода в браузер.
+    curl_setopt($ch, CURLOPT_POST, 0); // post запрос
+    $headers[] = 'Authorization: Bearer ' . $token;
+    $headers[] = 'Content-Type: application/json';
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); // выполение запроса
+
+    // Проверка на ошибки
+    if (curl_errno($ch)) {
+        echo 'Error:' . curl_error($ch);
+    }else {
+        $response = curl_exec($ch); // ответ
+        print_r($response);
+    }
+}
+//-------------------------------------------------------------------
+
+
+curlGetRequest($token, 'https://api.cdek.ru/v2/location/cities/?size=3&page=0');
 
 
 // Отправляем запрос на выдачю какого либо товара
@@ -47,30 +74,41 @@ function curlPostRequest($token, $post, $curUrl)
 //-------------------------------------------------------------------
 
 
+function getSdekTariffs(): string
+{
+    $city = '36749';
+    $lastCity = '16584';
+    $type = 1;
+    $post = '{
+        "type":' . $type . ',
+        "date": "2020-11-03T11:49:32+0700",
+        "currency": 1,
+        "lang": "rus",
+        "from_location": {
+            "code": '. $city .'
+        },
+        "to_location": {
+            "code": '. $lastCity .'
+        },
+        "packages": [
+            {
+                "height": 10,
+                "length": 20,
+                "weight": 4000,
+                "width": 10
+            }
+        ]
+    }';
+
+    return $post;
+}
+
 
 // пердеаем токен, json, ссылку
 //-------------------------------------------------------------------
 curlPostRequest($token,
-    '{
-    "type": 1,
-    "date": "2020-11-03T11:49:32+0700",
-    "currency": 1,
-    "lang": "rus",
-    "from_location": {
-        "code": 270
-    },
-    "to_location": {
-        "code": 44
-    },
-    "packages": [
-        {
-            "height": 10,
-            "length": 10,
-            "weight": 4000,
-            "width": 10
-        }
-    ]
-}',
-    'https://api.edu.cdek.ru/v2/calculator/tarifflist?='
+    getSdektariffs(),
+    'https://api.edu.cdek.ru/v2/calculator/tarifflist?=',
+
 );
 //-------------------------------------------------------------------

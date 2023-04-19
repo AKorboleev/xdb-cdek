@@ -103,6 +103,7 @@ try {
     }
     if ($result->hasErrors()) {
         // Обрабатываем ошибки
+
     }
 } catch (RequestException $exception) {
     echo $exception->getMessage();
