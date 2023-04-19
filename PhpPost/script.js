@@ -14,23 +14,20 @@ async function postJson() {
         if (!response.ok) {
             // Ошибка с получаемыми данными
             console.log('Ошибка HTTP: ' + response.status);
-        } else { // если HTTP-статус в диапазоне 200-299
+            // если HTTP-статус в диапазоне 200-299
+        } else {
             // Читаем ответ в формате JSON
             let content = await response.json();
             // Контейнер где хронятся все
             let containerBox = document.querySelector(".container__box");
 
             containerBox.style.display = 'block';
-
             // Название тарифа
             let tariffName = document.querySelector("h3.tariff_name");
-
             // Минимальная доставка
             let calendarMin = document.querySelector(".calendar__min");
-
             // Максимальная доставка
             let calendarMax = document.querySelector(".calendar__max");
-
             // Сумма доставки
             let deliverySum = document.querySelector(".delivery_sum");
 
@@ -67,13 +64,10 @@ async function postSdek() {
 
     // Название тарифа
     let tariffName = document.querySelector("h3.tariff_name");
-
     // Минимальная доставка
     let calendarMin = document.querySelector(".calendar__min");
-
     // Максимальная доставка
     let calendarMax = document.querySelector(".calendar__max");
-
     // Сумма доставки
     let deliverySum = document.querySelector(".delivery_sum");
 
@@ -100,7 +94,8 @@ async function postSdek() {
         if (!response.ok) {
             // Ошибка с получаемыми данными
             console.log('Ошибка HTTP: ' + response.status);
-        } else { // если HTTP-статус в диапазоне 200-299
+            // если HTTP-статус в диапазоне 200-299
+        } else {
                console.log('запрос ушел');
         }
     } catch (error) {
