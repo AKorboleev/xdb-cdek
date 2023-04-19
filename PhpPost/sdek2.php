@@ -1,12 +1,12 @@
 <?php
 
 
-require '../vendor/autoload.php';
+    require '../vendor/autoload.php';
 
-use CdekSDK2\BaseTypes;
-use CdekSDK2\Client;
-use CdekSDK2\Exceptions\AuthException;
-use Symfony\Component\HttpClient\Psr18Client;
+    use CdekSDK2\BaseTypes;
+    use CdekSDK2\Client;
+    use CdekSDK2\Exceptions\AuthException;
+    use Symfony\Component\HttpClient\Psr18Client;
 
 
     $client = new Psr18Client();
@@ -42,11 +42,8 @@ use Symfony\Component\HttpClient\Psr18Client;
         echo $exception->getMessage();
         print_r('error auth');
     }
-
-
-
-    // Создание заказа
     //-------------------------------------------------------------------
+    // Создание заказа
     $order = BaseTypes\Order::create([
         'number' => '3627',
         'tariff_code' => '1',
@@ -92,8 +89,9 @@ use Symfony\Component\HttpClient\Psr18Client;
 
 
 
-    // Отправка данных
+
     //-------------------------------------------------------------------
+    // Отправка данных
     try {
         $result = $cdek->orders()->add($order);
         if ($result->isOk()) {
@@ -104,7 +102,6 @@ use Symfony\Component\HttpClient\Psr18Client;
         }
         if ($result->hasErrors()) {
             // Обрабатываем ошибки
-
         }
     } catch (RequestException $exception) {
         echo $exception->getMessage();
