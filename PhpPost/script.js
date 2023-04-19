@@ -110,8 +110,9 @@ async function postSdek() {
         'calendarMax': calendarMax.textContent,
         'deliverySum': deliverySum.textContent,
     }
+
 // Отправка данных выбранной доставки
-//-------------------------------------------------------------------
+//     "vendor/cdek-it/sdk2.0/sdek2.php"
     try {
         let response = await fetch('http://xdb-cdek/PhpPost/sdek2.php', {
             method: 'POST',

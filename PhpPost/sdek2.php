@@ -33,6 +33,10 @@ $cdek->setTest(true);
     print_r($calendarMin);
     print_r($calendarMax);
 
+
+
+// Вход в аккаунт
+//-------------------------------------------------------------------
 try {
     $cdek->authorize();
     $cdek->getToken();
@@ -82,14 +86,27 @@ $order = BaseTypes\Order::create([
         ])
     ],
 ]);
+//-------------------------------------------------------------------
 
+
+
+//tt($order);
+
+
+
+// Отправка данных
+//-------------------------------------------------------------------
 try {
     $result = $cdek->orders()->add($order);
+    tt($result);
     if ($result->isOk()) {
+        print_r('hello');
         //Запрос успешно выполнился
         $response_order = $cdek->formatResponse($result, BaseTypes\Order::class);
+        tt($response_order);
         // получаем UUID заказа и сохраняем его
         $response_order->entity->uuid;
+        tt($response_order);
         echo 'Запрос успешно выполнился';
     }
     if ($result->hasErrors()) {
@@ -100,4 +117,15 @@ try {
     echo $exception->getMessage();
     print_r('не разобрался что выводит )');
 }
+//-------------------------------------------------------------------
 
+
+// Вывод данных
+//-------------------------------------------------------------------
+function tt($data)
+{
+    echo '<pre>';
+    echo print_r($data);
+    echo '</pre>';
+}
+//-------------------------------------------------------------------
