@@ -26,7 +26,6 @@ use GuzzleHttp\Client;
 //-------------------------------------------------------------------
 function curlPostRequest($token, $post, $curUrl)
 {
-
     $ch = curl_init(); //Инициализирует сеанс cURL
     // curl_setopt устанавливает параметры curl
     curl_setopt($ch, CURLOPT_URL, $curUrl);// что будем загружать
@@ -44,7 +43,6 @@ function curlPostRequest($token, $post, $curUrl)
         $response = curl_exec($ch); // ответ
         print_r($response);
     }
-
 }
 //-------------------------------------------------------------------
 
@@ -75,5 +73,4 @@ curlPostRequest($token,
 }',
     'https://api.edu.cdek.ru/v2/calculator/tarifflist?='
 );
-
 //-------------------------------------------------------------------

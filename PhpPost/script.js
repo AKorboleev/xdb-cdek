@@ -7,7 +7,6 @@ async function postJson() {
                 headers: {
                     'Content-Type': 'application/application/json',
                 },
-
                 mode: 'no-cors',
                 cache: 'no-cache',
             })
@@ -39,7 +38,6 @@ async function postJson() {
 
                 // Цикл для вывода контента
                 for (let k in content.tariff_codes) {
-
                     // Копируем контейнер с данными и выводим его
                     //-------------------------------------------------------------------
                     let containerClone = containerBox.cloneNode(true)
@@ -69,7 +67,6 @@ postJson();
 // Отправляем в handler с данными доставки
 //-------------------------------------------------------------------
 async function postSdek() {
-
     // Название тарифа
     let tariffName = document.querySelector("h3.tariff_name")
 
@@ -101,7 +98,6 @@ async function postSdek() {
             cache: 'no-cache',
                 body: JSON.stringify(delivery)
         })
-
         if (!response.ok) {
             // Ошибка с получаемыми данными
             console.log("Ошибка HTTP: " + response.status);
