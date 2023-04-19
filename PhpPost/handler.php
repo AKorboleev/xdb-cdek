@@ -55,7 +55,8 @@
     // Отображение возможной доставки
     function curlPostRequest($token, $post, $curUrl)
     {
-        $ch = curl_init(); //Инициализирует сеанс cURL
+        // Инициализирует сеанс cURL
+        $ch = curl_init();
         // curl_setopt устанавливает параметры curl
         // что будем загружать
         curl_setopt($ch, CURLOPT_URL, $curUrl);
@@ -73,8 +74,10 @@
         // Проверка на ошибки
         if (curl_errno($ch)) {
             echo 'Error:' . curl_error($ch);
-        }else {
-            $response = curl_exec($ch); // ответ
+
+        } else {
+            // Возращаем
+            $response = curl_exec($ch);
             print_r($response);
         }
     }
@@ -82,8 +85,8 @@
     // Возможный тариф доставки
     function getSdekTariffs(): string
     {
-        $firstCity = '16584';
-        $lastCity = '36749';
+        $firstCity = 16584;
+        $lastCity = 36749;
         $type = 1;
         $post = '{
             "type":' . $type . ',
@@ -110,8 +113,5 @@
     }
     //-------------------------------------------------------------------
     // Пердеаем токен, json, ссылку
-    curlPostRequest($token,
-        getSdektariffs(),
-        'https://api.edu.cdek.ru/v2/calculator/tarifflist?=',
-    );
+    curlPostRequest($token, getSdektariffs(), 'https://api.edu.cdek.ru/v2/calculator/tarifflist?=');
     //-------------------------------------------------------------------
