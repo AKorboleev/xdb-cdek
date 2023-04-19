@@ -16,7 +16,8 @@
             'Content-type' => 'application/x-www-form-urlencoded'
             ]
     ]);
-    $data = json_decode($response->getBody()->getContents()); // запрос форматируется в json формат
+    // запрос форматируется в json формат
+    $data = json_decode($response->getBody()->getContents());
 
     // Сам токен
     $token = $data->access_token;
@@ -24,14 +25,19 @@
     // Возможные города доставки
     function curlGetRequest($token, $curUrl)
     {
-        $ch = curl_init(); //Инициализирует сеанс cURL
+        // Инициализирует сеанс cURL
+        $ch = curl_init();
         // curl_setopt устанавливает параметры curl
-        curl_setopt($ch, CURLOPT_URL, $curUrl);// что будем загружать
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // для возврата результата передачи в качестве строки, место прямого вывода в браузер.
-        curl_setopt($ch, CURLOPT_POST, 0); // get запрос
+        // Что будем загружать
+        curl_setopt($ch, CURLOPT_URL, $curUrl);
+        // для возврата результата передачи в качестве строки, место прямого вывода в браузер.
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        // get запрос
+        curl_setopt($ch, CURLOPT_POST, 0);
         $headers[] = 'Authorization: Bearer ' . $token;
         $headers[] = 'Content-Type: application/json';
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); // выполение запроса
+        // выполение запроса
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
         // Проверка на ошибки
         if (curl_errno($ch)) {
@@ -51,13 +57,18 @@
     {
         $ch = curl_init(); //Инициализирует сеанс cURL
         // curl_setopt устанавливает параметры curl
-        curl_setopt($ch, CURLOPT_URL, $curUrl);// что будем загружать
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // для возврата результата передачи в качестве строки, место прямого вывода в браузер.
-        curl_setopt($ch, CURLOPT_POST, 1); // post запрос
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $post); // Передача разных типов данных
+        // что будем загружать
+        curl_setopt($ch, CURLOPT_URL, $curUrl);
+        // для возврата результата передачи в качестве строки, место прямого вывода в браузер.
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        // post запрос
+        curl_setopt($ch, CURLOPT_POST, 1);
+        // Передача разных типов данных
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
         $headers[] = 'Authorization: Bearer ' . $token;
         $headers[] = 'Content-Type: application/json';
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); // выполение запроса
+        // Выполение запроса
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
         // Проверка на ошибки
         if (curl_errno($ch)) {
@@ -98,7 +109,7 @@
         return $post;
     }
     //-------------------------------------------------------------------
-    // пердеаем токен, json, ссылку
+    // Пердеаем токен, json, ссылку
     curlPostRequest($token,
         getSdektariffs(),
         'https://api.edu.cdek.ru/v2/calculator/tarifflist?=',
