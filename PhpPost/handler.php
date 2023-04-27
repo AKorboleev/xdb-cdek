@@ -1,27 +1,54 @@
 <?php
+//-------------------------------------------------------------------
+// Запрос токена
 
-    require '../vendor/autoload.php';
+// curl
 
-    use GuzzleHttp\Client;
+//    $url = 'https://api.edu.cdek.ru/v2/oauth/token?grant_type=client_credentials&client_id=EMscd6r9JnFiQ3bLoyjJY6eM78JrJceI&client_secret=PjLZkKBHEiLK3YsjtNrt3TGNG0ahs3kG';
+//    $myCurl = curl_init();
+//    curl_setopt_array($myCurl, array(
+//        CURLOPT_URL => $url,
+//        CURLOPT_RETURNTRANSFER => true,
+//        CURLOPT_POST => true,
+//        CURLOPT_POSTFIELDS => http_build_query(array(/*здесь массив параметров запроса*/))
+//    ));
+//    $response = curl_exec($myCurl);
+//    $data = json_decode($response);
+//    curl_close($myCurl);
+//    $token = $data->access_token;
+//    print_r($token);
 
+////    echo "Ответ на Ваш запрос: ".$response;
 
+// file_get_contents
 
+    $opts = array('http' =>
 
-    //-------------------------------------------------------------------
-    // Запрос токена
-    $client = new Client();
+        array(
+
+            'method'  => 'POST',
+
+            'header'  => "Content-Type: application/x-www-form-urlencoded",
+
+            'timeout' => 60
+
+        )
+
+    );
+
+    $context  = stream_context_create($opts);
+
     $url = 'https://api.edu.cdek.ru/v2/oauth/token?grant_type=client_credentials&client_id=EMscd6r9JnFiQ3bLoyjJY6eM78JrJceI&client_secret=PjLZkKBHEiLK3YsjtNrt3TGNG0ahs3kG';
-    $response = $client->request('POST', $url, [
-        'header' => [
-            'Content-type' => 'application/x-www-form-urlencoded'
-            ]
-    ]);
-    // запрос форматируется в json формат
-    $data = json_decode($response->getBody()->getContents());
 
-    // Сам токен
+    $result = file_get_contents($url, false, $context);
+
+    $data = json_decode($result);
+
     $token = $data->access_token;
-    //-------------------------------------------------------------------
+
+
+
+//-------------------------------------------------------------------
     // Возможные города доставки
     function curlGetRequest($token, $curUrl)
     {
@@ -49,7 +76,7 @@
     }
     //-------------------------------------------------------------------
 
-    //curlGetRequest($token, 'https://api.cdek.ru/v2/location/cities/?size=3&page=0');
+    curlGetRequest($token, 'https://api.cdek.ru/v2/location/cities/?size=3&page=0');
 
     //-------------------------------------------------------------------
     // Отображение возможной доставки

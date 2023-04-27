@@ -10,7 +10,6 @@ async function postSdek() {
     let calendarMax = document.querySelector('.calendar__max');
     // Сумма доставки
     let deliverySum = document.querySelector('.delivery_sum');
-
     // Массив с данными
     let delivery = {
         'tariffName': tariffName.textContent,
@@ -18,6 +17,7 @@ async function postSdek() {
         'calendarMax': calendarMax.textContent,
         'deliverySum': deliverySum.textContent,
     };
+    console.log(delivery)
 
     // Отправка данных выбранной доставки
     try {
@@ -31,9 +31,9 @@ async function postSdek() {
             body: JSON.stringify(delivery)
         });
         // Проверка ушел ли запрос в sdek2.php
-        if (!response.ok) {
+         if (!response.ok) {
             // Ошибка с получаемыми данными
-            console.log('Ошибка HTTP: ' + response.status);
+             console.log('Ошибка HTTP: ' + response.status);
         }
         // если HTTP-статус в диапазоне 200-299
         else {
@@ -58,12 +58,13 @@ async function postJson() {
         // Проверка прошел ли запрос в handler.php
         if (!response.ok) {
             // Ошибка с получаемыми данными
-            console.log('Ошибка HTTP: ' + response.status);
+             console.log('Ошибка HTTP: ' + response.status);
         }
         // если HTTP-статус в диапазоне 200-299
         else {
             // Читаем ответ в формате JSON
             let content = await response.json();
+            console.log(content);
             // Контейнер где хранятся все
             let containerBox = document.querySelector('.container__box');
             // Место none меняем за block
@@ -83,8 +84,8 @@ async function postJson() {
                 //-------------------------------------------------------------------
                 // Копируем контейнер с данными и выводим его
                 let containerClone = containerBox.cloneNode(true)
-                containerClone.style.display = 'block'
-                document.body.appendChild(containerClone)
+                containerClone.style.display = 'block';
+                document.body.appendChild(containerClone);
                 //-------------------------------------------------------------------
 
                 //-------------------------------------------------------------------
