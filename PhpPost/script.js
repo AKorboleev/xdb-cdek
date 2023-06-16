@@ -1,5 +1,5 @@
 //-------------------------------------------------------------------
-// Отправляем в handler с данными доставки , работает от onclick()
+// Отправляем в handler с данными доставки. Работает от onclick()
 async function postSdek() {
 
     // Название тарифа
@@ -17,7 +17,7 @@ async function postSdek() {
         'calendarMax': calendarMax.textContent,
         'deliverySum': deliverySum.textContent,
     };
-    console.log(delivery)
+    console.log(delivery);
 
     // Отправка данных выбранной доставки
     try {
@@ -37,7 +37,7 @@ async function postSdek() {
         }
         // если HTTP-статус в диапазоне 200-299
         else {
-            console.log('запрос ушел');
+            console.log('Данные отправились');
         }
     } catch (error) {
         return error;
@@ -62,14 +62,14 @@ async function postJson() {
         }
         // если HTTP-статус в диапазоне 200-299
         else {
+            console.log('1111');
             // Читаем ответ в формате JSON
             let content = await response.json();
-            console.log(content);
-            // Контейнер где хранятся все
+            console.log(content.tariff_code);
+            // Контейнер где хранится все
             let containerBox = document.querySelector('.container__box');
-            // Место none меняем за block
+            // Вместо none меняем на block
             containerBox.style.display = 'block';
-
             // Название тарифа
             let tariffName = document.querySelector('h3.tariff_name');
             // Минимальная доставка
@@ -96,6 +96,7 @@ async function postJson() {
                 deliverySum.textContent = content.tariff_codes[k].delivery_sum;
                 //-------------------------------------------------------------------
             }
+            console.log('Успешно')
         }
     } catch (error) {
         return  error;
@@ -105,3 +106,4 @@ async function postJson() {
 
 // Отправляем запрос в handler
 postJson();
+

@@ -38,11 +38,12 @@
 
     $context  = stream_context_create($opts);
 
-    $url = 'https://api.edu.cdek.ru/v2/oauth/token?grant_type=client_credentials&client_id=EMscd6r9JnFiQ3bLoyjJY6eM78JrJceI&client_secret=PjLZkKBHEiLK3YsjtNrt3TGNG0ahs3kG';
+    $url = 'https://api.cdek.ru/v2/oauth/token?grant_type=client_credentials&client_id=WeW5myxqY83HEjJ7sv8njlGlChbm1ug8&client_secret=3rYd7HGWtUkJWWIcQp5zNg2TwaeeXFXh';
 
+    // Отправляем запрос по указанному url
     $result = file_get_contents($url, false, $context);
-
     $data = json_decode($result);
+
 
     $token = $data->access_token;
 
@@ -76,7 +77,7 @@
     }
     //-------------------------------------------------------------------
 
-    curlGetRequest($token, 'https://api.cdek.ru/v2/location/cities/?size=3&page=0');
+//    curlGetRequest($token, 'https://api.cdek.ru/v2/location/cities/?size=3&page=0');
 
     //-------------------------------------------------------------------
     // Отображение возможной доставки
@@ -138,7 +139,86 @@
 
         return $post;
     }
+
+//    function registerOrder () : string
+//    {
+//
+//
+//        $post = '{
+//            "number" : "ddOererre7450813980068",
+//            "comment" : "Новый заказ",
+//            "delivery_recipient_cost" : {
+//                "value" : 50
+//            },
+//            "delivery_recipient_cost_adv" : [ {
+//                "sum" : 3000,
+//                "threshold" : 200
+//            } ],
+//            "from_location" : {
+//                "code" : "44",
+//                "fias_guid" : "",
+//                "postal_code" : "",
+//                "longitude" : "",
+//                "latitude" : "",
+//                "country_code" : "",
+//                "region" : "",
+//                "sub_region" : "",
+//                "city" : "Москва",
+//                "kladr_code" : "",
+//                "address" : "пр. Ленинградский, д.4"
+//            },
+//            "to_location" : {
+//                "code" : "270",
+//                "fias_guid" : "",
+//                "postal_code" : "",
+//                "longitude" : "",
+//                "latitude" : "",
+//                "country_code" : "",
+//                "region" : "",
+//                "sub_region" : "",
+//                "city" : "Новосибирск",
+//                "kladr_code" : "",
+//                "address" : "ул. Блюхера, 32"
+//            },
+//            "packages" : [ {
+//                "number" : "bar-001",
+//                "comment" : "Упаковка",
+//                "height" : 10,
+//                "items" : [ {
+//                    "ware_key" : "00055",
+//                    "payment" : {
+//                        "value" : 3000
+//                    },
+//                    "name" : "Товар",
+//                    "cost" : 300,
+//                    "amount" : 2,
+//                    "weight" : 700,
+//                    "url" : "www.item.ru"
+//                } ],
+//            "length" : 10,
+//            "weight" : 4000,
+//            "width" : 10
+//            } ],
+//            "recipient" : {
+//                "name" : "Иванов Иван",
+//                "phones" : [ {
+//                "number" : "+79134637228"
+//            } ]
+//            },
+//            "sender" : {
+//                "name" : "Петров Петр"
+//            },
+//            "services" : [ {
+//                "code" : "SECURE_PACKAGE_A2"
+//            } ],
+//            "tariff_code" : 139
+//        }';
+//
+//        return $post;
+//    }
+
     //-------------------------------------------------------------------
     // Пердеаем токен, json, ссылку
-    curlPostRequest($token, getSdektariffs(), 'https://api.edu.cdek.ru/v2/calculator/tarifflist?=');
+    curlPostRequest($token, registerOrder(), 'https://api.cdek.ru/v2/orders');
+    curlPostRequest($token, getSdekTariffs(), 'https://api.cdek.ru/v2/calculator/tarifflist?=');
     //-------------------------------------------------------------------
