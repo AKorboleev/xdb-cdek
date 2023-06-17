@@ -62,10 +62,9 @@ async function postJson() {
         }
         // если HTTP-статус в диапазоне 200-299
         else {
-            console.log('1111');
             // Читаем ответ в формате JSON
             let content = await response.json();
-            console.log(content.tariff_code);
+            console.log(content);
             // Контейнер где хранится все
             let containerBox = document.querySelector('.container__box');
             // Вместо none меняем на block
@@ -80,14 +79,7 @@ async function postJson() {
             let deliverySum = document.querySelector('.delivery_sum');
 
             // Цикл для вывода контента
-            for (let k in content.tariff_codes) {
-                //-------------------------------------------------------------------
-                // Копируем контейнер с данными и выводим его
-                let containerClone = containerBox.cloneNode(true)
-                containerClone.style.display = 'block';
-                document.body.appendChild(containerClone);
-                //-------------------------------------------------------------------
-
+            for  (let k in content.tariff_codes) {
                 //-------------------------------------------------------------------
                 // Данные которые требуется вывети
                 tariffName.textContent = content.tariff_codes[k].tariff_name;
@@ -95,8 +87,15 @@ async function postJson() {
                 calendarMin.textContent = content.tariff_codes[k].calendar_min;
                 deliverySum.textContent = content.tariff_codes[k].delivery_sum;
                 //-------------------------------------------------------------------
+                //-------------------------------------------------------------------
+                // Копируем контейнер с данными и выводим его
+                let containerClone = containerBox.cloneNode(true)
+                containerClone.style.display = 'block';
+                document.body.appendChild(containerClone);
+                //-------------------------------------------------------------------
+
             }
-            console.log('Успешно')
+            console.log('Успешно выполнен')
         }
     } catch (error) {
         return  error;
