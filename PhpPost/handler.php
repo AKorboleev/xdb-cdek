@@ -80,6 +80,7 @@
     // Весь возможный список населенных пунктов.
 //   curlGetRequest($token, 'https://api.cdek.ru/v2/location/cities/?');
 
+
     //-------------------------------------------------------------------
     // Отображение возможной доставки
     function curlPostRequest($token, $post, $curUrl)
@@ -107,7 +108,42 @@
         } else {
             // Возращаем
             $response = curl_exec($ch);
-            print_r($response);
+//            print_r($response);
+
+        }
+    }
+    //-------------------------------------------------------------------
+    // Отображение возможной доставки
+    function curlPostRequestInfoDelivery($token, $post, $curUrl)
+    {
+        // Инициализирует сеанс cURL
+        $ch = curl_init();
+        // curl_setopt устанавливает параметры curl
+        // что будем загружать
+        curl_setopt($ch, CURLOPT_URL, $curUrl);
+        // для возврата результата передачи в качестве строки, место прямого вывода в браузер.
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        // post запрос
+        curl_setopt($ch, CURLOPT_POST, 1);
+        // Передача разных типов данных
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+        $headers[] = 'Authorization: Bearer ' . $token;
+        $headers[] = 'Content-Type: application/json';
+        // Выполение запроса
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+        // Проверка на ошибки
+        if (curl_errno($ch)) {
+            echo 'Error:' . curl_error($ch);
+
+        } else {
+            // Возращаем
+            $response = curl_exec($ch);
+            $post = json_decode($response, true);
+            $uuid = $post["entity"]["uuid"];
+//            print_r($uuid);
+//            print_r($post);
+            curlGetRequest($token, "https://api.cdek.ru/v2/orders/$uuid");
         }
     }
     //-------------------------------------------------------------------
@@ -141,7 +177,7 @@
         return $post;
     }
 
-    function registerOrder () : string
+    function registerOrder ()
     {
         $post = '{
             "number" : "ddOererre7450813980068",
@@ -208,21 +244,25 @@
                 "name" : "Петров Петр"
             },
             "services" : [ {
-                "code" : "SECURE_PACKAGE_A2"
+                "code" : "INSURANCE"
             } ],
             "tariff_code" : 139
         }';
-
-        return $post ;
+         return $post;
     }
+
 
     //-------------------------------------------------------------------
     // Пердеаем токен, json, ссылку
+//    curlGetRequestInfoDelivery($token, "https://api.cdek.ru/v2/orders/$uuid");
+//    curlGetRequest($token,'http://api.cdek.ru/v2/delivery/72753034-90df-4e44-8e50-1fcf67a80ad2');
 
-    // Регистрация товара
-//    curlPostRequest($token, registerOrder(), 'https://api.cdek.ru/v2/orders?=');
+    // Регистрация товара и информация
+curlPostRequestInfoDelivery($token, registerOrder(), 'https://api.cdek.ru/v2/orders?=');
+
 //    // Данные товара или о товаре
-//    curlPostRequest($token, registerOrder(), 'https://api.cdek.ru/v2/orders/72753034-1bb2-4854-a411-4ba8469a39fa');
+//a38df5c4-ba2d-44fe-9b19-7a501301c915
+//    curlGetRequest($token, 'https://api.cdek.ru/v2/orders/a38df5c4-ba2d-44fe-9b19-7a501301c915');
     // Вывод допустимых доставок
-    curlPostRequest($token,  getSdekTariffs(), 'https://api.cdek.ru/v2/calculator/tarifflist?=');
+//    curlPostRequest($token,  getSdekTariffs(), 'https://api.cdek.ru/v2/calculator/tarifflist?=');
     //-------------------------------------------------------------------

@@ -4,6 +4,7 @@ require_once '../vendor/autoload.php';
 // Указываем имя и пароль
 use CdekSDK\CdekClient;
 use CdekSDK\Common;
+use CdekSDK\Common\Order;
 use CdekSDK\Requests;
 use Mosquitto\Client;
 
@@ -30,31 +31,19 @@ $client = new CdekClient($account, $secure, new \GuzzleHttp\Client([
 ]));
 
 $order = new Common\Order([
-    'Number'     => 'TEST-123456',
+    'Number'   => 'TEST-123456',
     'SendCityCode'    => 44, // Москва
     'RecCityPostCode' => '630001', // Новосибирск
-    'RecipientName'    => 'Иван Петров',
-    'RecipientEmail'   => 'petrov@test.ru',
-    'Phone'            => '+7 (383) 202-22-50',
-    'TariffTypeCode'   => 1,
-    'RecipientCompany' => 'Петров и партнёры, ООО',
-    'Comment'          => 'Это тестовый заказ',
+    'RecipientName'  => 'Иван Петров',
+    'RecipientEmail' => 'petrov@test.ru',
+    'Phone'          => '+7 (383) 202-22-50',
+    'TariffTypeCode' => 139, // Посылка дверь-дверь от ИМ
 ]);
 
-$order->setSender(Common\Sender::create([
-    'Company' => 'ЗАО «Рога и Копыта»',
-    'Name'    => 'Петр Иванов',
-    'Phone'   => '+7 (283) 101-11-20',
-])->setAddress(Common\Address::create([
-    'Street' => 'Морозильная улица',
-    'House'  => '2',
-    'Flat'   => '101',
-])));
-
 $order->setAddress(Common\Address::create([
-    'Street'  => 'Холодильная улица',
-    'House'   => '16',
-    'Flat'    => '22',
+    'Street' => 'Холодильная улица',
+    'House'  => '16',
+    'Flat'   => '22',
 ]));
 
 $package = Common\Package::create([
@@ -64,34 +53,47 @@ $package = Common\Package::create([
     'SizeA'   => 10, // Длина (в сантиметрах), в пределах от 1 до 1500
     'SizeB'   => 10,
     'SizeC'   => 10,
-    'Comment' => 'Обязательное описание вложения',
 ]);
+
+$package->addItem(new Common\Item([
+    'WareKey' => 'NN0001', // Идентификатор/артикул товара/вложения
+    'Cost'    => 500, // Объявленная стоимость товара (за единицу товара)
+    'Payment' => 0, // Оплата за товар при получении (за единицу товара)
+    'Weight'  => 120, // Вес (за единицу товара, в граммах)
+    'Amount'  => 2, // Количество единиц одноименного товара (в штуках)
+    'Comment' => 'Test item',
+]));
 
 $order->addPackage($package);
 
-$order->addService(Common\AdditionalService::create(Common\AdditionalService::SERVICE_DELIVERY_TO_DOOR));
-
-$request = new Requests\AddDeliveryRequest([
-    'Number'          => 'TESTING123',
-    'ForeignDelivery' => false,
-    'Currency'        => 'RUB',
+$request = new Requests\DeliveryRequest([
+    'Number' => 'TESTING123',
 ]);
 $request->addOrder($order);
+print_r($order);
+$response = $client->sendDeliveryRequest($request);
 
-$response = $client->sendAddDeliveryRequest($request);
 
 if ($response->hasErrors()) {
     // обработка ошибок
-}
 
+    foreach ($response->getErrors() as $order) {
+        // заказы с ошибками
+        $order->getMessage();
+        $order->getErrorCode();
+        $order->getNumber();
+    }
+
+    foreach ($response->getMessages() as $message) {
+        // Сообщения об ошибках
+    }
+}
+print_r($client->getNumber());
 foreach ($response->getOrders() as $order) {
     // сверяем данные заказа, записываем номер
     $order->getNumber();
     $order->getDispatchNumber();
-    print_r(
-        $order->getNumber()
-        ->getdispatchNumber()
-    );
+    break;
 }
 
-
+print_r($response);

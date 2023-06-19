@@ -3,7 +3,9 @@
 require_once '../vendor/autoload.php';
 use CdekSDK\CdekClient;
 use CdekSDK\Common;
+use CdekSDK\Common\Order;
 use CdekSDK\Requests;
+use GuzzleHttp\Client;
 
 $account = 'WeW5myxqY83HEjJ7sv8njlGlChbm1ug8';
 $secure = '3rYd7HGWtUkJWWIcQp5zNg2TwaeeXFXh';
@@ -11,17 +13,17 @@ $secure = '3rYd7HGWtUkJWWIcQp5zNg2TwaeeXFXh';
 
 $cdek_client = new CdekClient($account, $secure);
 
-$client = new CdekClient($account, $secure, new \GuzzleHttp\Client([
-    'base_uri' => 'https://integration.cdek.ru',
-]));
+//$client = new CdekClient($account, $secure, new Client([
+//    'base_uri' => 'https://integration.cdek.ru',
+//]));
+$client = new \CdekSDK\CdekClient($account, $secure);
 
 $dispatchNumber = '12345678910';
-
 
 $request = new Requests\StatusReportRequest();
 // можно указывать или всё сразу, или только диапазоны дат, или только конкретные заказы
 $request->setChangePeriod(new Common\ChangePeriod(new \DateTime('-1 day'), new \DateTime('+1 day')));
-$request->addOrder(Common\Order::withDispatchNumber($dispatchNumber));
+$request->addOrder(Order::withDispatchNumber($dispatchNumber));
 
 // попросим показать историю изменения статусов заказов
 $request->setShowHistory();
@@ -33,35 +35,18 @@ if ($response->hasErrors()) {
 }
 
 foreach ($response as $order) {
-    /** @var \CdekSDK\Common\Order $order */
-    $order->getActNumber();
+    /** @var Order $order */
     $order->getNumber();
-    $order->getDispatchNumber();
-    $order->getDeliveryDate();
-    $order->getRecipientName();
+    $order->getSenderCity()->getName();
+    $order->getRecipientCity()->getName();
 
-    if ($status = $order->getStatus()) {
-        $status->getDescription();
-        $status->getDate();
-        $status->getCode();
-        $status->getCityCode();
-        $status->getCityName();
-
-        foreach ($status->getStates() as $state) {
-            $state->getDescription();
-            $state->getDate();
-            $state->getCode();
-            $state->getCityCode();
-            $state->getCityName();
-            $state->isFinal();
-        }
+    foreach ($order->getPackages() as $package) {
+        $package->getBarCode();
+        $package->getVolumeWeight();
     }
 
-    $order->getReason()->getCode();
-    $order->getReason()->getDescription();
-    $order->getReason()->getDate();
-
-    $order->getDelayReason()->getCode();
-    $order->getDelayReason()->getDescription();
-    $order->getDelayReason()->getDate();
+    foreach ($order->getAdditionalServices() as $service) {
+        $service->getServiceCode();
+        $service->getSum();
+    }
 }
