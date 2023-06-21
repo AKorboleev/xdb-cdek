@@ -222,16 +222,16 @@
                 "items" : [ {
                     "ware_key" : "00055",
                     "payment" : {
-                        "value" : 3000
+                        "value" : 0
                     },
-                    "name" : "Товар",
+                    "name" : "Кружка",
                     "cost" : 300,
-                    "amount" : 2,
-                    "weight" : 700,
+                    "amount" : 1,
+                    "weight" : 500,
                     "url" : "www.item.ru"
                 } ],
             "length" : 10,
-            "weight" : 4000,
+            "weight" : 500,
             "width" : 10
             } ],
             "recipient" : {
@@ -251,6 +251,71 @@
          return $post;
     }
 
+    function registerOrderDelivery() : string
+    {
+        $post = '{
+        "type": 2,
+        "tariff_code": 119,
+        "comment": "Новый заказ",
+        "shipment_point": "MSK67",
+        "sender": {
+            "company": "Компания",
+            "name": "Петров Петр",
+            "email": "msk@cdek.ru",
+            "phones": [
+                {
+                    "number": "+79134000101"
+                }
+            ]
+        },
+        "recipient": {
+            "company": "Иванов Иван",
+            "name": "Иванов Иван",
+            "passport_series": "5008",
+            "passport_number": "345123",
+            "passport_date_of_issue": "2019-03-12",
+            "passport_organization": "ОВД Москвы",
+            "tin": "123546789",
+            "email": "email@gmail.com",
+            "phones": [
+                {
+                    "number": "+79134000404"
+                }
+            ]
+        },
+        "to_location": {
+            "code": "44",
+            "fias_guid": "0c5b2444-70a0-4932-980c-b4dc0d3f02b5",
+            "postal_code": "109004",
+            "longitude": 37.6204,
+            "latitude": 55.754,
+            "country_code": "RU",
+            "region": "Москва",
+            "sub_region": "Москва",
+            "city": "Москва",
+            "kladr_code": "7700000000000",
+            "address": "ул. Блюхера, 32"
+        },
+        "services": [
+            {
+                "code": "INSURANCE",
+                "parameter": "3000"
+            }
+        ],
+        "packages": [
+            {
+                "number": "bar-001",
+                "weight": "500",
+                "length": 10,
+                "width": 10,
+                "height": 10,
+                "comment": " Кружка"
+            }
+        ]
+    }';
+        return $post;
+    }
+
 
     //-------------------------------------------------------------------
     // Пердеаем токен, json, ссылку
@@ -258,7 +323,7 @@
 //    curlGetRequest($token,'http://api.cdek.ru/v2/delivery/72753034-90df-4e44-8e50-1fcf67a80ad2');
 
     // Регистрация товара и информация
-curlPostRequestInfoDelivery($token, registerOrder(), 'https://api.cdek.ru/v2/orders?=');
+curlPostRequestInfoDelivery($token, registerOrderDelivery(), 'https://api.cdek.ru/v2/orders?=');
 
 //    // Данные товара или о товаре
 //a38df5c4-ba2d-44fe-9b19-7a501301c915
