@@ -32,7 +32,9 @@ class variables
     //Строка адреса ru, en , большими буквами
     // Регион доставки
     protected string $region;
-    protected string $cub_region;
+
+    protected string $sub_region;
+
     protected string $city;
     //Тип дополнительной услуги
     protected string $code;
@@ -43,13 +45,13 @@ class variables
     //	Общий вес (в граммах)
     protected string $all_weights;
     //Да, если указаны остальные габариты
-    protected bool $length;
+    protected int $length;
     //да, если указаны остальные габариты
     //Габариты упаковки. Ширина (в сантиметрах)
-    protected bool $width;
+    protected int $width;
     //да, если указаны остальные габариты
     //Габариты упаковки. Высота (в сантиметрах)
-    protected bool $height;
+    protected int $height;
     // Наименование к упаковке
     protected bool $comments;
     //Наименование товара (может также содержать описание товара: размер, цвет)

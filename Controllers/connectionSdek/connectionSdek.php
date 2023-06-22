@@ -62,7 +62,7 @@ class connectionSdek extends variablesInternetShop
     }
     //-------------------------------------------------------------------
     // Гет запрос
-    function curlGetRequest($token, $curUrl)
+    function curlGetRequest($curUrl)
     {
         // Инициализирует сеанс cURL
         $ch = curl_init();
@@ -73,7 +73,7 @@ class connectionSdek extends variablesInternetShop
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         // get запрос
         curl_setopt($ch, CURLOPT_POST, 0);
-        $headers[] = 'Authorization: Bearer ' . $token;
+        $headers[] = 'Authorization: Bearer ' . $this->token;
         $headers[] = 'Content-Type: application/json';
         // выполение запроса
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
@@ -83,7 +83,34 @@ class connectionSdek extends variablesInternetShop
             echo 'Error:' . curl_error($ch);
         }else {
             $response = curl_exec($ch); // ответ
-            print_r($response);
+            // декодируем пришедший  json
+            $post = json_decode($response, true);
+            //---------------------------------------------------------------------------
+            //Тут идет проверка на целостность запроса. Обработался ли он или нет
+            // Если статус заказа инвалид
+            if($status = $post["requests"]["0"]["state"] == "INVALID") {
+                echo $status;
+                echo "запрос обработался с ошибкой";
+            }// Если статус заказа ошибка
+            else if($status = $post["requests"]["0"]["state"] == "WAITING")
+            {
+                echo $status;
+                echo "запрос ожидает обработки (зависит от выполнения другого запроса)";
+            }// Если статус заказа принятый
+            else if($status = $post["requests"]["0"]["state"] == "ACCEPTED")
+            {
+                echo $status;
+                echo "пройдена предварительная валидация и запрос принят";
+            }// Если статус заказа успешный, тогда выведится трек номер
+            else {
+                $status = $post["requests"]["0"]["state"] == "SUCCESSFUL";
+                echo 'SUCCESSFUL';
+                echo '<br>';
+                $cdek_number = $post["entity"]["cdek_number"];
+                echo 'cdek_number '. $cdek_number;
+                echo '<br>';
+                echo 'запрос обработан успешно';
+            }
         }
     }
     //---------------------------------------------------------------------------
@@ -114,10 +141,9 @@ class connectionSdek extends variablesInternetShop
             // Возращаем
             $response = curl_exec($ch);
             $post = json_decode($response, true);
-            print_r($post);
-//            $uuid = $post["entity"]["uuid"];
-
-//            curlGetRequest($this->token, "https://api.cdek.ru/v2/orders/$uuid");
+//            var_dump($post);
+            $uuid = $post["entity"]["uuid"];
+           $this->curlGetRequest( "https://api.cdek.ru/v2/orders/$uuid");
         }
     }
     //---------------------------------------------------------------------------
@@ -178,26 +204,26 @@ class connectionSdek extends variablesInternetShop
     }
     //---------------------------------------------------------------------------
     // тело запроса доставки
-    public function bodyDelivery($tariff_code,$sender_company,$sender_name_last_name_surname,$sender_numbers_phone,$recipient_company, $receiving_numbers_phone , $receiving_name_last_name_surname, $str_address,$region, $cub_region,$city, $code, $address, $number_packages,$all_weights, $length, $width, $height, $comments)
+    public function bodyDelivery($tariff_code, $sender_company, $sender_name_last_name_surname,$sender_numbers_phone,$recipient_company, $receiving_name_last_name_surname,$receiving_numbers_phone, $str_address,$region, $sub_region,$city, $code, $address, $number_packages,$all_weights, $length, $width, $height, $comments)
     {
-        $this->body_delivery = '{
+       return $this->body_delivery = '{
              "type": 2,
-             "tariff_code": '.$this->tariff_code.',
+             "tariff_code": '.$tariff_code.',
              "comment": "Новый заказ",
              "shipment_point": "MSK67",
              "sender": {
-                 "company": "'.$this->sender_company.'",
-                 "name": "'.$this->sender_name_last_name_surname.'",
+                 "company": "'.$sender_company.'",
+                 "name": "'.$sender_name_last_name_surname.'",
                  "email": "msk@cdek.ru",
                  "phones": [
                      {
-                         "number": "+'.$this->receiving_numbers_phone .'"
+                         "number": "+'.$sender_numbers_phone .'"
                      }
                  ]
              },
              "recipient": {
-                 "company": "'. $this->recipient_company .'",
-                 "name": "'. $this->receiving_name_last_name_surname .'",
+                 "company": "'.$recipient_company .'",
+                 "name": "'.$receiving_name_last_name_surname .'",
                  "passport_series": "5008",
                  "passport_number": "345123",
                  "passport_date_of_issue": "2019-03-12",
@@ -206,22 +232,22 @@ class connectionSdek extends variablesInternetShop
                  "email": "email@gmail.com",
                  "phones": [
                      {
-                         "number": "+'.$this->sender_numbers_phone.'"
+                         "number": "+'.$receiving_numbers_phone.'"
                      }
                  ]
              },
              "to_location": {
-                 "code": "'.$this->code.'",
+                 "code": "'.$code.'",
                  "fias_guid": "0c5b2444-70a0-4932-980c-b4dc0d3f02b5",
                  "postal_code": "109004",
                  "longitude": 37.6204,
                  "latitude": 55.754,
-                 "country_code": "'.$this->str_address.'",
-                 "region": "'.$this->region.'",
-                 "sub_region": "'.$this->city.'",
-                 "city": "Москва",
+                 "country_code": "'.$str_address.'",
+                 "region": "'.$region.'",
+                 "sub_region": "'.$sub_region.'",
+                 "city": "'.$city.'",
                  "kladr_code": "7700000000000",
-                 "address": "'.$this->address.'"
+                 "address": "'.$address.'"
              },
              "services": [
                  {
@@ -231,17 +257,18 @@ class connectionSdek extends variablesInternetShop
              ],
              "packages": [
                  {
-                     "number": "'.$this->number_packages.'",
-                     "weight": "'.$this->all_weights.'",
-                     "length": '.$this->length.',
-                     "width": '.$this->width.',
-                     "height": '.$this->height.',
-                     "comment": "'.$this->comments.'"
+                     "number": "'.$number_packages.'",
+                     "weight": "'.$all_weights.'",
+                     "length": '.$length.',
+                     "width": '.$width.',
+                     "height": '.$height.',
+                     "comment": "'.$comments.'"
                  }
              ]
          }';
     }
     //--------------------------------------------------------------------------
+
     // тело запроса интернет-магазина
     public function bodyinternetShop ()
     {
