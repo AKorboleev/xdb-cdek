@@ -4,9 +4,6 @@
       "Controllers\\": "Controllers/"
     }
   },
-  "psr-4": {
-    "App\\": "app/"
-  },
   "require": {
     "sanmai/cdek-sdk": "^0.7.7"
   },

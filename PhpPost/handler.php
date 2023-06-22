@@ -148,7 +148,7 @@
     }
     //-------------------------------------------------------------------
     // Возможный тариф доставки
-    function getSdekTariffs(): string
+    function postSdekTariffs(): string
     {
         $firstCity = 270;
         $lastCity = 40;
