@@ -21,7 +21,7 @@ async function postSdek() {
 
     // Отправка данных выбранной доставки
     try {
-        let response = await fetch('http://xdb-cdek/PhpPost/sdek2.php', {
+        let response = await fetch('http://xdb-cdek/PhpPost/handler.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -59,6 +59,7 @@ async function postJson() {
         if (!response.ok) {
             // Ошибка с получаемыми данными
              console.log('Ошибка HTTP: ' + response.status);
+             console.log('crash');
         }
         // если HTTP-статус в диапазоне 200-299
         else {
@@ -77,7 +78,6 @@ async function postJson() {
             let calendarMax = document.querySelector('.calendar__max');
             // Сумма доставки
             let deliverySum = document.querySelector('.delivery_sum');
-
             // Цикл для вывода контента
             for  (let k in content.tariff_codes) {
                 //-------------------------------------------------------------------
@@ -105,4 +105,3 @@ async function postJson() {
 
 // Отправляем запрос в handler
 postJson();
-
