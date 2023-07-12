@@ -267,14 +267,15 @@
 			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
 			// Проверка на ошибки
-			if (curl_errno($ch)) {
+			if (curl_errno($ch))
+			{
 				echo 'Error:' . curl_error($ch);
-
-			} else {
+			}
+			else
+			{
 				// Возращаем
-					$response = curl_exec($ch);
+				$response = curl_exec($ch);
 				print_r($response);
-
 			}
 		}
 		//-------------------------------------------------------------------
